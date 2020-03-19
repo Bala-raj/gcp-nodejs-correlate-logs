@@ -1,13 +1,19 @@
-
-You need enable and use in your application -> @google-cloud/trace-agent
-
 **With Google's solution has limitation which let you use only wherever you have access to the request object**  - https://github.com/googleapis/nodejs-logging-bunyan
 
 But with this you can log anywhere.
 
 ![alt text](./src/QAz6L.png)
 
-Setup: This example shown below will push logs only when it is production or staging server. For dev also using the bunyan logger but this way it saves a cost instead pushing unnecessary local logs to cloud.
+### Step 1:
+
+You need enable in GCP and use in your application -> [@google-cloud/trace-agent](https://www.npmjs.com/package/@google-cloud/trace-agent)
+
+
+### Step 2:
+
+This example shown below will push logs only when it is production or staging server. 
+
+For dev also using the bunyan logger but this way it saves a cost instead pushing unnecessary local logs to cloud.
 
 config/logger.js
 ```javascript
@@ -67,9 +73,9 @@ app.listen(config.PORT, () => log.info(`Server listening on port ${config.PORT}.
 
 ```
 
-
 Import the log and use it wherever you want. 
-/api.js
+
+api.js
 
 ```javascript
 import { Router }  from 'express';

@@ -92,4 +92,5 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 lib/
+yarn.lock
 # End of https://www.gitignore.io/api/node
