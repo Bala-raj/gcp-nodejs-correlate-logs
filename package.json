@@ -1,0 +1,44 @@
+{
+  "name": "gcp-nodejs-correlate-logs",
+  "version": "0.0.1",
+  "description": "Helper module for nodejs applications to correlate logs in Google Cloud Platform",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "npm run lint && ./node_modules/.bin/babel src -d lib",
+    "lint": "eslint ./src --fix"
+  },
+  "keywords": [
+    "gcp",
+    "logs",
+    "nodejs",
+    "grouping logs",
+    "correlate logs"
+  ],  
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/logging-bunyan": "^2.0.3",
+    "bunyan": "^1.8.12",
+    "cls-hooked": "^4.2.2",
+    "uuid": "^7.0.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/preset-env": "^7.6.0",
+    "babel-core": "^6.26.3",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "jest": "^24.9.0"
+  },
+  "author": {
+    "name": "Balachander",
+    "url": "https://github.com/Bala-raj"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Bala-raj/gcp-nodejs-correlate-logs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Bala-raj/gcp-nodejs-correlate-logs/issues"
+  }
+}
