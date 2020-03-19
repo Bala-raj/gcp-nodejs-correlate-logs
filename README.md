@@ -6,7 +6,7 @@ But with this you can log anywhere.
 
 ### Step 1:
 
-You need enable in GCP and use in your application -> [@google-cloud/trace-agent](https://www.npmjs.com/package/@google-cloud/trace-agent)
+You need to enable in GCP and use in your application -> [@google-cloud/trace-agent](https://www.npmjs.com/package/@google-cloud/trace-agent)
 
 
 ### Step 2:
@@ -61,6 +61,10 @@ server.js
 
 ```javascript
 import express from 'express';
+
+// Activate Google Cloud Trace before logging
+if (ifLive() || ifStaging())
+  require('@google-cloud/trace-agent').start(); 
 
 import config, { APPLICATION_MODE } from './config/config';
 import { loggerContextMiddleware, log } from './config/logger';
