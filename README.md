@@ -15,6 +15,8 @@ This example shown below will push logs only when it is production or staging se
 
 For dev also using the bunyan logger but this way it saves a cost instead pushing unnecessary local logs to cloud.
 
+[![Check and do needful for gcp-nodejs-correlate-logs](https://github.com/Bala-raj/gcp-nodejs-correlate-logs/actions/workflows/nodejs.yml/badge.svg)](https://github.com/Bala-raj/gcp-nodejs-correlate-logs/actions/workflows/nodejs.yml)
+
 config/logger.js
 ```javascript
 
