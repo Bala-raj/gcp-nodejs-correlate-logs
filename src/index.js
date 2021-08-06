@@ -1,7 +1,7 @@
 import bunyan from 'bunyan';
 import { LOGGING_TRACE_KEY } from '@google-cloud/logging-bunyan';
 import cls from 'cls-hooked';
-import uuid from 'uuid/v1';
+import { v1 as uuid } from 'uuid';
 
 /**
  * CreateLogger will return loggerContextMiddleware and log.
