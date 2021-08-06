@@ -39,13 +39,7 @@ jobs:
       - if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
         name: Get package History
         uses: flood-io/is-published-on-npm@v1
-        id: isPublished
-
-         # Get package history. Whether same package version is already published or not
-      - if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
-        name: Get package History
-        uses: flood-io/is-published-on-npm@v1
-        id: isPublished
+        id: isPublished         
 
       # Run below steps if the same version not published already
       # Setup package registry to publish package
