@@ -1,0 +1,83 @@
+name: Check and do needful for gcp-nodejs-correlate-logs
+on:
+  # Trigger workflow when a pull request is created/updated/merged
+  pull_request:
+    types: [opened,synchronize,closed]
+    branches: [ main, master ]
+jobs:
+  run-build-test-lint-publish-package:
+    runs-on: ubuntu-latest  
+    
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          # npm cache files are stored in `~/.npm` on ubuntu-latest
+          path: ~/.npm
+          key: ${{ runner.os }}-build-cache-node-modules
+          restore-keys: |
+            ${{ runner.os }}-build-cache-node-modules
+
+      - name: Install Dependencies
+        run: |        
+          npm ci
+
+      - name: Build
+        run: |
+          npm run build
+      
+      # Generate change logs and add it as comment in the respective pull request. It Will work only for pull request event
+      - name: Generate Change logs
+        uses: bala-raj/pull-request-changelog@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch:  ${{ github.event.pull_request.base.ref }}
+
+      # Get package history. Whether same package version is already published or not
+      - if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
+        name: Get package History
+        uses: flood-io/is-published-on-npm@v1
+        id: isPublished
+
+
+      # Get the latest generated change logs from comments
+      - if: (github.event_name == 'pull_request' && github.event.pull_request.merged == true && steps.isPublished.outputs.published == 'false' )
+        name: Get Change logs from Comment
+        uses: peter-evans/find-comment@v1
+        id: fetchComment
+        with:
+          issue-number: ${{ github.event.number }}
+          comment-author: github-actions[bot]
+          direction: last
+      
+      # Get current version from package.json
+      - if: (github.event_name == 'pull_request' && github.event.pull_request.merged == true && steps.isPublished.outputs.published == 'false' ) 
+        name: Get package version
+        id: package-version
+        run: |
+          echo "::set-output name=version::$(grep -m1 version package.json | awk -F: '{ print $2 }' | sed 's/[", ]//g')"
+      
+      # Create release after publishing the package
+      - if: (github.event_name == 'pull_request' && github.event.pull_request.merged == true && steps.isPublished.outputs.published == 'false' )
+        name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ steps.package-version.outputs.version}} # Get version from package.json
+          release_name: ${{ github.event.pull_request.title }} # Get pull request Title
+          body: | # Get the latest generated change logs and add in the release description
+            ${{ steps.fetchComment.outputs.comment-body }}
+          draft: false
+          prerelease: false # This is not a prerelease so set false
+
+      # Delete head branch after merging the code
+      - if: (github.event_name == 'pull_request' && github.event.pull_request.merged == true && steps.isPublished.outputs.published == 'false' )
+        name: Delete merged branch
+        uses: koj-co/delete-merged-action@master
+        with:
+          branches: "!dev, !main, !master" # If we make PR from dev || master || main to any other branch, we should not delete these branches
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
