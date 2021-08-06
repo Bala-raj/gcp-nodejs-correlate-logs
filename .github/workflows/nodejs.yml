@@ -39,33 +39,35 @@ jobs:
       - if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
         name: Get package History
         uses: flood-io/is-published-on-npm@v1
-        id: isPublished
-
-         # Get package history. Whether same package version is already published or not
-      - if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
-        name: Get package History
-        uses: flood-io/is-published-on-npm@v1
-        id: isPublished
+        id: isPublished         
 
       # Run below steps if the same version not published already
       # Setup package registry to publish package
       - if: (github.event_name == 'pull_request' && github.event.pull_request.merged == true && steps.isPublished.outputs.published == 'false' )
-        name: Publish in GitHub 
+        name: Setup Registry
         uses: actions/setup-node@v1
         with:
           node-version: '14.x'
-          registry-url: 'https://npm.pkg.github.com'
-        run:  npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}       
+          registry-url: 'https://npm.pkg.github.com'          
 
       # Publish package into github registry
       - if: (github.event_name == 'pull_request' && github.event.pull_request.merged == true && steps.isPublished.outputs.published == 'false' )
-        name: Publish in NPM
+        name: Publish package
+        run:  npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+      
+      # Setup package registry to publish in NPM package
+      - if: (github.event_name == 'pull_request' && github.event.pull_request.merged == true && steps.isPublished.outputs.published == 'false' )
+        name: Setup Registry
         uses: actions/setup-node@v1
         with:
           node-version: '14.x'
-          registry-url: https://registry.npmjs.org/
+          registry-url: https://registry.npmjs.org/         
+
+      # Publish package into github registry
+      - if: (github.event_name == 'pull_request' && github.event.pull_request.merged == true && steps.isPublished.outputs.published == 'false' )
+        name: Publish package
         run:  npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} 
