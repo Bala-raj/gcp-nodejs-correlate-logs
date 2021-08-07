@@ -40,22 +40,6 @@ jobs:
         name: Get package History
         uses: flood-io/is-published-on-npm@v1
         id: isPublished         
-
-      # Run below steps if the same version not published already
-      # Setup package registry to publish package
-      - if: (github.event_name == 'pull_request' && github.event.pull_request.merged == true && steps.isPublished.outputs.published == 'false' )
-        name: Setup Registry
-        uses: actions/setup-node@v1
-        with:
-          node-version: '14.x'
-          registry-url: 'https://npm.pkg.github.com'          
-
-      # Publish package into github registry
-      - if: (github.event_name == 'pull_request' && github.event.pull_request.merged == true && steps.isPublished.outputs.published == 'false' )
-        name: Publish package
-        run:  npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
       
       # Setup package registry to publish in NPM package
       - if: (github.event_name == 'pull_request' && github.event.pull_request.merged == true && steps.isPublished.outputs.published == 'false' )
