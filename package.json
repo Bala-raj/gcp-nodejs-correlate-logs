@@ -1,6 +1,6 @@
 {
   "name": "gcp-nodejs-correlate-logs",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "description": "Helper module for nodejs applications to correlate logs in Google Cloud Platform",
   "main": "lib/index.js",
   "scripts": {
@@ -16,7 +16,7 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "@google-cloud/logging-bunyan": "^2.0.3",
+    "@google-cloud/logging-bunyan": "^3.1.1",
     "bunyan": "^1.8.12",
     "cls-hooked": "^4.2.2",
     "uuid": "^7.0.2"
@@ -25,7 +25,7 @@
     "@babel/cli": "^7.15.7",
     "@babel/core": "^7.8.7",
     "@babel/preset-env": "^7.6.0",
-    "eslint": "^6.8.0",
+    "eslint": "^8.1.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2"
   },
