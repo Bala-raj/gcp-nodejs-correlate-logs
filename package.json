@@ -1,6 +1,6 @@
 {
   "name": "gcp-nodejs-correlate-logs",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Helper module for nodejs applications to correlate logs in Google Cloud Platform",
   "main": "lib/index.js",
   "scripts": {
