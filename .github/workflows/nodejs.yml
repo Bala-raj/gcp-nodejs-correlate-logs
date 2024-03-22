@@ -87,12 +87,3 @@ jobs:
             ${{ steps.fetchComment.outputs.comment-body }}
           draft: false
           prerelease: false # This is not a prerelease so set false
-
-      # Delete head branch after merging the code
-      - if: (github.event_name == 'pull_request' && github.event.pull_request.merged == true && steps.isPublished.outputs.published == 'false' )
-        name: Delete merged branch
-        uses: koj-co/delete-merged-action@master
-        with:
-          branches: "!dev, !main, !master" # If we make PR from dev || master || main to any other branch, we should not delete these branches
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
